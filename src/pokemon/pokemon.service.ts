@@ -41,21 +41,21 @@ export class PokemonService {
     return await this.pokemonModel.find();
   }
 
-  async findOne(id: string) {
+  async findOne(term: string) {
     let pokemon: Pokemon | null = null;
-    if (!isNaN(+id)) {
-      pokemon = await this.pokemonModel.findOne({ no: +id });
+    if (!isNaN(+term)) {
+      pokemon = await this.pokemonModel.findOne({ no: +term });
     }
-    if (!pokemon && isValidObjectId(id)) {
-      pokemon = await this.pokemonModel.findById(id);
+    if (!pokemon && isValidObjectId(term)) {
+      pokemon = await this.pokemonModel.findById(term);
     }
     if (!pokemon) {
       pokemon = await this.pokemonModel.findOne({
-        name: id.toLowerCase().trim(),
+        name: term.toLowerCase().trim(),
       });
     }
 
-    if (!pokemon) throw new NotFoundException(`Pokemon '${id}' not found`);
+    if (!pokemon) throw new NotFoundException(`Pokemon '${term}' not found`);
 
     return pokemon;
   }
